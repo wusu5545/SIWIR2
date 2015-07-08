@@ -1,0 +1,15 @@
+object/LinkedCell.o: src/LinkedCell.cpp include/functions.h
+
+object/Update.o: src/Update.cpp include/functions.h
+
+object/ForceCalculation.o: src/ForceCalculation.cpp include/functions.h
+
+object/Initialization.o: src/Initialization.cpp include/functions.h \
+ include/ParameterReader.h
+
+object/main.o: src/main.cpp include/functions.h
+
+object/ParameterReader.o: src/ParameterReader.cpp include/ParameterReader.h
+
+object/vtk_output.o: src/vtk_output.cpp include/functions.h
+
