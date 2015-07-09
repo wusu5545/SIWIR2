@@ -26,7 +26,7 @@ void LinkedCell()
     for (size_t j=0;j<3;++j){
       if (x(i,j)<minxyz[j])
 	x(i,j) += boxsize[j];
-      if (x(i,j)>=minxyz[j])
+      if (x(i,j)>=maxxyz[j])
 	x(i,j) -= boxsize[j];
     }
   

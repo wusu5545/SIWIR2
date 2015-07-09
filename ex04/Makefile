@@ -11,11 +11,11 @@ SRCS = $(wildcard $(SRC_DIR)/*.cpp)
 HEDS = $(wildcard $(INC_DIR)/*.h)
 OBJS = $(SRCS:$(SRC_DIR)%.cpp=$(OBJ_DIR)%.o)
 
-argu  = input/mini.par  input/mini.dat
+argu  = input/blocks.par input/blocks-small.dat
 argu1 = input/params_50x50.dat
 argu2 = input/params_bonus.dat
 
-REF_DIR = referenceOutputs/vtk_50x50
+REF_DIR = ../ex04_group08
 REF_SRC =$(wildcard $(REF_DIR)/*.vtk)
 
 VTK_DIR = vtk

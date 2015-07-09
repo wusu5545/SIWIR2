@@ -65,5 +65,35 @@ int main(int argc, char* argv[])
   //Initializing force calculation
   ForceCalculation();
   
+  //Velocity-Verlet
+  for (double t = 0;t<t_end;t+=delta_t)
+  {
+    //position update
+    Position_update();
+    //reset linked cell
+    size_t num_of_cells = cells_of_xyz[0]*cells_of_xyz[1]*cells_of_xyz[2];
+    cells = boost::make_shared<int[]>(num_of_cells,-1);
+    for (size_t i=0;i<N;++i)
+      particles[i]=i;
+    //linked cell
+    LinkedCell();
+    
+    //copy forces
+    for (size_t i=0;i<N;++i)
+      for (size_t j=0;j<3;++j)
+	F_old(i,j) = F(i,j);
+
+    //Force calculation
+    ForceCalculation();
+    
+    //update Velocites
+    Velocity_update();
+    
+    if (t>=t_start)
+      vtk_output(iteration,vtk_count);
+    
+    iteration++;
+  }
+  
   return 0;
 }
