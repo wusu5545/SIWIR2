@@ -12,8 +12,8 @@ HEDS = $(wildcard $(INC_DIR)/*.h)
 OBJS = $(SRCS:$(SRC_DIR)%.cpp=$(OBJ_DIR)%.o)
 
 argu  = input/blocks.par input/blocks-small.dat
-argu1 = input/params_50x50.dat
-argu2 = input/params_bonus.dat
+argu1 = input/blocks.par input/blocks-medium.dat
+argu2 = input/blocks.par input/blocks-large.dat
 
 REF_DIR = ../ex04_group08
 REF_SRC =$(wildcard $(REF_DIR)/*.vtk)
@@ -74,6 +74,12 @@ compare:
 
 run: $(TARGET) cleanvtk
 	./$(TARGET) $(argu)
+	
+run1: $(TARGET) cleanvtk
+	./$(TARGET) $(argu1)
+
+run2: $(TARGET) cleanvtk
+	./$(TARGET) $(argu2)
 	
 MODULE = default
 
