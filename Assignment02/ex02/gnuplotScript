@@ -1,0 +1,6 @@
+set xlabel "x"
+set ylabel "y"
+splot "output/ksq.txt" with points,"output_ref/ksq-ref.txt" with points
+pause -1
+splot "output/eigenmode.txt" with points,"output_ref/eigenmode-ref.txt" with points
+pause -1

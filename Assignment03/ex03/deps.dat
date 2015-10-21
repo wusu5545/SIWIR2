@@ -1,0 +1,11 @@
+object/solver.o: src/solver.cpp include/functions.h include/filereader.h \
+ include/lbm.h
+
+object/filereader.o: src/filereader.cpp include/filereader.h
+
+object/main.o: src/main.cpp include/functions.h include/filereader.h \
+ include/lbm.h
+
+object/vtk_output.o: src/vtk_output.cpp include/functions.h include/filereader.h \
+ include/lbm.h
+

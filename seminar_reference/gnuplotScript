@@ -1,0 +1,4 @@
+set xlabel "x"
+set ylabel "y"
+splot "solution.dat" with pm3d
+pause -1

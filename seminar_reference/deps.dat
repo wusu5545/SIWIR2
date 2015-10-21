@@ -1,0 +1,18 @@
+obj/mgsolver.o: src/mgsolver.cpp inc/stencil.h inc/precision.h inc/config.h \
+ inc/mgsolver.h inc/smoother.h inc/grid.h inc/types.h inc/stencil.h \
+ inc/grid.h inc/util.h inc/config.h inc/cgsolver.h inc/timer.h
+
+obj/grid.o: src/grid.cpp inc/grid.h inc/types.h inc/grid.h inc/precision.h \
+ inc/config.h
+
+obj/cgsolver.o: src/cgsolver.cpp inc/cgsolver.h inc/grid.h inc/types.h \
+ inc/precision.h inc/config.h inc/grid.h inc/mgsolver.h inc/smoother.h \
+ inc/stencil.h inc/types.h
+
+obj/smoother.o: src/smoother.cpp inc/smoother.h inc/grid.h inc/types.h \
+ inc/precision.h inc/config.h inc/precision.h inc/grid.h
+
+obj/main.o: src/main.cpp inc/mgsolver.h inc/smoother.h inc/grid.h inc/types.h \
+ inc/precision.h inc/config.h inc/stencil.h inc/grid.h inc/util.h \
+ inc/config.h inc/types.h
+

@@ -1,0 +1,102 @@
+
+void Smoother::rb_gauss_seidel_f_RBAtOnce(Grid& a, const Grid& f, size_t iter, size_t cycle) {
+
+	const int halfSize = a.getHalfSize();
+
+
+	//Overrelaxation: regular gauss-seidel with omega = 1 - Faster convergence for omega = 1.3
+	//const real omega = 1.5; //1.4 - 0.05*cycle;
+	const double omega = 1.539; //1.4 - 0.05*cycle;
+	const double H = a.hsize();
+	const double center = (H * H * omega) / 4.0;
+	const double outer  = 1.0 / (H * H);
+
+	//omp_set_num_threads(6);
+
+	//static bool RED = true;
+	
+
+	for(size_t c = 0; c < iter; ++c) {
+		std::cout << "Huhu" << std::endl;
+		//red
+#pragma omp parallel
+		{
+			int threadNum = omp_get_thread_num();
+			int numRows   = halfSize/8;
+			int startRow  = -halfSize+1 + threadNum * numRows;
+			if(threadNum == 7) numRows--;
+			if(threadNum == 0) std::cout << startRow << " bis " << startRow+numRows-1 << std::endl;
+
+			if(threadNum != 0){
+				//-1st row red
+				for (int j = -halfSize+2; j < halfSize; j+=2) {
+					a(startRow-1, j) = (1-omega)*a(startRow-1,j) + center * (f(startRow-1, j) +
+							outer * (a(startRow-1,j+1) + a(startRow-1,j-1) + 
+								a(startRow-2,j) + a(startRow,j))); 
+				}
+			} else {
+				//i = 0 red	
+				for (int j = -halfSize + 2; j < 0; j+=2) {
+					a(0, j) = (1-omega)*a(0,j) + center * (f(0, j) +
+							outer * (a(0,j+1) + a(0,j-1) + 
+								a(-1,j) + a(-1,j))); 
+				}
+			}
+
+			for (int j = -halfSize+1; j < halfSize; j+=2) {
+				a(startRow, j) = (1-omega)*a(startRow,j) + center * (f(startRow, j) +
+						outer * (a(startRow,j+1) + a(startRow,j-1) + 
+							a(startRow-1,j) + a(startRow+1,j))); 
+			}
+			
+#pragma omp barrier
+
+			//red and black rows at once
+			//runs till -1 for red and till -2 for black
+			for (int i = startRow+1; i < startRow+numRows-1; ++i) {
+				int j = -halfSize + 2 - ((-i)&1);
+				for (; j < halfSize; j+=2) {
+					a(i, j) = (1-omega)*a(i,j) + center * (f(i, j) +
+							outer * (a(i,j+1) + a(i,j-1) + 
+								a(i+1,j) + a(i-1,j))); 
+					a(i-1, j) = (1-omega)*a(i-1,j) + center * (f(i-1, j) +
+							outer * (a(i-1,j+1) + a(i-1,j-1) + 
+								a(i,j) + a(i-2,j))); 
+				}
+			}
+
+//only in case one thread finishes work before the other thread has even started working
+#pragma omp barrier
+
+			// i = -2 black
+			for (int j = -halfSize + 2; j < halfSize; j+=2) {
+				a(startRow+numRows-2, j) = (1-omega)*a(startRow+numRows-2,j) + center * (f(startRow+numRows-2, j) +
+						outer * (a(startRow+numRows-2,j+1) + a(startRow+numRows-2,j-1) + 
+							a(startRow+numRows-3,j) + a(startRow+numRows-1,j))); 
+			}
+
+
+			// i = -1 black
+			for (int j = -halfSize + 1; j < halfSize; j+=2) {
+				a(startRow+numRows-1, j) = (1-omega)*a(startRow+numRows-1,j) + center * (f(startRow+numRows-1, j) +
+						outer * (a(startRow+numRows-1,j+1) + a(startRow+numRows-1,j-1) + 
+							a(startRow+numRows-2,j) + a(startRow+numRows,j))); 
+			}
+
+			if(threadNum == 7){
+				// i = 0 black
+				for (int j = -halfSize + 1; j < 0; j+=2) {
+					a(0, j) = (1-omega)*a(0,j) + center * (f(0, j) +
+							outer * (a(0,j+1) + a(0,j-1) + 
+								a(-1,j) + a(-1,j))); 
+				}
+			}
+
+#pragma omp barrier
+
+		}
+	}
+}
+
+
+

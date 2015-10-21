@@ -1,0 +1,27 @@
+object/IPI.o: src/IPI.cpp include/functions.h include/vertex.h
+
+object/ksq.o: src/ksq.cpp
+
+object/norm.o: src/norm.cpp include/functions.h include/vertex.h
+
+object/operator.o: src/operator.cpp include/functions.h include/vertex.h
+
+object/CG.o: src/CG.cpp include/functions.h include/vertex.h
+
+object/vertex.o: src/vertex.cpp include/vertex.h
+
+object/waveguide.o: src/waveguide.cpp include/functions.h include/vertex.h \
+ include/Source/Colsamm.h include/Source/Loops.h include/Source/Loops.C \
+ include/Source/Polynom.h include/Source/Polynom.C \
+ include/Source/Gauss_Points.h include/Source/Gauss_Points.C \
+ include/Source/VertexComputations.h include/Source/VertexComputations.C \
+ include/Source/Mapping.h include/Source/Mapping.C \
+ include/Source/BasisFunctions.h include/Source/BasisFunctions.C \
+ include/Source/Domain.h include/Source/Domain.C \
+ include/Source/Stencil_ET.h include/Source/Stencil_ET.C \
+ include/Source/CT_Manip_ET.h include/Source/CT_Manip_ET.C \
+ include/Source/Integrand_Vector.h include/Source/Integrand_Vector.C \
+ include/Source/Elements.h
+
+object/main.o: src/main.cpp include/functions.h include/vertex.h
+
